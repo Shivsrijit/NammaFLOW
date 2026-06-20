@@ -1,44 +1,70 @@
-# NammaFLOW Serving API
+# NammaFLOW Serving Backend
 
-This directory contains the FastAPI python backend for NammaFLOW. During development, this server provides API endpoints to fetch pipeline results, handles raw e-challan CSV file uploads, fits forecasting models, and serves compiled static assets.
-
----
-
-## Endpoint Specifications
-
-* **GET /api/health**: Returns server status and lists loaded JSON artifacts.
-* **GET /api/stats**: Returns aggregate citywide parking metrics.
-* **GET /api/hotspots**: Returns GeoJSON FeatureCollection of calculated parking hotspots.
-* **GET /api/hotspot/{id}**: Returns Feature details for a specific hotspot ID.
-* **GET /api/heatmap**: Returns full density coordinate grid.
-* **GET /api/priority-queue**: Returns priority queue list sorted worst-first.
-* **GET /api/forecast**: Returns weekly spatiotemporal forecast predictions.
-* **GET /api/temporal**: Returns weekly heat matrices and peak hourly windows.
-* **GET /api/dark-zones**: Returns calculated unenforced risk zones.
-* **GET /api/forecast-12h**: Runs inference on the pre-trained operational model to forecast load for the next shift.
-* **POST /api/forecast-12h/upload**: Recieves raw CSV file, triggers model retraining, and returns predictions (currently disabled for static Vercel build).
+This directory houses the FastAPI serving application for NammaFLOW. During local development, the backend serves JSON/GeoJSON database files, provides endpoints for spatial queries, and handles model training/inference tasks.
 
 ---
 
-## Technical Features
+## 1. System Architecture and Boot Workflows
 
-* **Warm Caching**: Loads all JSON and GeoJSON files from disk on application startup to ensure instant response times.
-* **Startup Retraining**: Checks for the existence of the operational model `forecast_model_12h.pkl` on startup. If missing, it automatically trains the LightGBM/GradientBoosting model on the default dataset once and caches it.
-* **CORS Middleware**: Allows requests from the local Vite development server on port 5173.
+FastAPI is configured as an asynchronous serving engine:
+
+```mermaid
+graph TD
+    Start[Server Startup] --> Cache[1. Warm Caching Engine]
+    Cache --> ModelCheck[2. 12h Model Training Check]
+    ModelCheck --> StaticMount[3. Mount Frontend dist/]
+    StaticMount --> Ready[Server Ready to Listen]
+```
+
+### Stage 1: Warm Caching Engine
+On boot, the server loads all spatial artifacts from the filesystem into an in-memory dictionary `_CACHE`. This ensures subsequent GET queries retrieve static GeoJSON features in microseconds:
+```python
+_CACHE: dict = {}
+def _load(name: str):
+    if name not in _CACHE:
+        path = ARTIFACTS / name
+        _CACHE[name] = json.loads(path.read_text())
+    return _CACHE[name]
+```
+
+### Stage 2: Startup Model Training Check
+The backend monitors the existence of `forecast_model_12h.pkl` in the artifacts folder. If the trained operational model is missing, it dynamically appends `ml` to Python's system path, parses the default raw violations dataset, fits the blended ensemble model, and serializes the state to disk.
+
+### Stage 3: Static Mounting
+Checks for the presence of the built static React client under `frontend/dist/`. If found, it mounts the static folder to the root endpoint (`/`) to host the entire command console on a single port.
 
 ---
 
-## Running the Server
+## 2. API Endpoint Specification
+
+The serving API exposes the following endpoints (default port `8000`):
+
+| Method | Endpoint | Description | Request Parameters | Response Format |
+|---|---|---|---|---|
+| **GET** | `/api/health` | Returns server operational status and available JSON artifacts. | None | `{"status": "ok", "artifacts": [...]}` |
+| **GET** | `/api/stats` | Aggregated citywide metrics (total violations, worst hotspots). | None | `{"total_violations": 20456, ...}` |
+| **GET** | `/api/hotspots` | GeoJSON FeatureCollection of all prioritized parking hotspots. | None | `{"type": "FeatureCollection", ...}` |
+| **GET** | `/api/hotspot/{id}` | Detailed properties and temporal histograms for a single hotspot. | `id` (Path, int) | GeoJSON Feature |
+| **GET** | `/api/heatmap` | Fine-grained Geohash-7 violation density grid coordinates. | None | JSON Array |
+| **GET** | `/api/priority-queue` | Priority queue list sorted worst-first based on impact score. | `limit` (Query, int) | JSON Array |
+| **GET** | `/api/forecast` | Weekly 168-hour spatiotemporal forecast predictions. | None | JSON Object |
+| **GET** | `/api/temporal` | Weekly load matrices and peak hourly windows. | None | JSON Object |
+| **GET** | `/api/dark-zones` | High-risk transit exit regions lacking recorded patrols. | None | JSON Array |
+| **GET** | `/api/forecast-12h` | Next-shift forecast predictions and confidence intervals. | None | `{"total_12h": 269.1, ...}` |
+| **POST** | `/api/forecast-12h/upload` | Recieves raw e-challan CSV to retrain operational model. | Multipart File | `501 NotImplemented` (static build restriction) |
+
+---
+
+## 3. Local Setup and Deployment
 
 1. **Activate Environment**:
    ```bash
-   # In root directory
    .venv\Scripts\activate
    ```
-2. **Start FastAPI**:
+2. **Launch Server**:
    ```bash
    uvicorn backend.main:app --reload --port 8000
    ```
 3. **Interactive Documentation**:
-   * Interactive API docs: http://localhost:8000/docs
-   * Raw JSON schema: http://localhost:8000/openapi.json
+   - OpenAPI Swagger interface: http://localhost:8000/docs
+   - Alternative Redoc interface: http://localhost:8000/redoc

@@ -32,18 +32,17 @@ export default function Footer() {
           </div>
 
           <div className="text-sm sm:text-right">
-            <div className="font-display font-semibold">Made for the {EVENT}</div>
-            <div className="muted mt-1 flex items-center gap-1.5 sm:justify-end">
-              Built with <span style={{ color: "#e24b4a" }}>♥</span> and a lot of coffee
-            </div>
-            <div className="muted mt-1">Bengaluru Traffic Police open dataset</div>
+            <div className="font-display font-semibold">Made for Bengaluru Traffic Police</div>
+            <div className="muted mt-1">On Bengaluru Traffic Police dataset</div>
           </div>
         </div>
 
         <div className="mt-10 pt-6 flex flex-col sm:flex-row justify-between gap-2 text-xs muted"
           style={{ borderTop: "1px solid var(--border)" }}>
           <span>© {YEAR} {NAME}. All rights reserved.</span>
-          <span>FastAPI · MapLibre · scikit-learn · LightGBM</span>
+          <a href="https://github.com/Shivsrijit/NammaFLOW" target="_blank" rel="noreferrer" className="hover:underline text-[var(--accent)] font-semibold">
+            github.com/Shivsrijit/NammaFLOW
+          </a>
         </div>
       </div>
     </footer>
