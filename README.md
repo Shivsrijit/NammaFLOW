@@ -19,27 +19,23 @@ The platform is designed to operate completely as a static frontend console util
 
 The project is structured into three layers: the machine learning pipeline, the serving API, and the static frontend client.
 
-```
-+--------------------------------------------------------------+
-|                         ML PIPELINE                          |
-|  1. Clean Raw Data -> 2. Spatial HDBSCAN Clustering           |
-|  3. Congestion & Loss Scoring -> 4. LightGBM Forecast        |
-|  5. Assemble JSON/GeoJSON Artifacts                          |
-+--------------------------------------------------------------+
-                               |
-                               v
-+--------------------------------------------------------------+
-|                       STATIC ARTIFACTS                       |
-|  Pre-compiled JSON, GeoJSON, and model metrics cached in     |
-|  frontend/public/data/ for direct static loading             |
-+--------------------------------------------------------------+
-                               |
-                               v
-+--------------------------------------------------------------+
-|                      FRONTEND CLIENT                         |
-|  Pure React + Vite dashboard displaying interactive maps,     |
-|  priority queues, temporal matrices, and 12-hour forecasts   |
-+--------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph ML [ML Pipeline]
+        Clean[1. Clean Raw Data] --> Cluster[2. Spatial HDBSCAN Clustering]
+        Cluster --> Score[3. Congestion & Loss Scoring]
+        Score --> Forecast[4. LightGBM Forecast]
+        Forecast --> Assemble[5. Assemble Artifacts]
+    end
+
+    Assemble -->|frontend/public/data/| Artifacts[(Static Artifacts)]
+    Artifacts -->|Direct Fetch| Dashboard[Frontend Client]
+
+    subgraph Client [React + Vite Dashboard]
+        Dashboard --> Maps[Interactive Maps]
+        Dashboard --> Queue[Priority Dispatch]
+        Dashboard --> Metrics[Temporal Matrices & 12h Forecasts]
+    end
 ```
 
 ---

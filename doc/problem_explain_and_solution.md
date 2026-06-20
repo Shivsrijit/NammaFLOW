@@ -23,27 +23,14 @@ Illegal parking is not just a regulatory issue, it has severe economic impacts. 
 
 NammaFLOW solves these challenges by combining spatial density calculations with road topology and POI proximity metrics:
 
-```
-[ Raw E-Challan Data ]
-         |
-         v
-[ Stage 01: Ingestion & Localization ] -> standardizes bounds and timezone
-         |
-         v
-[ Stage 02: HDBSCAN Clustering ] -> group coordinate locations into hotspots
-         |
-         v
-[ Stage 03: Proximity and Scoring ]
-   * Enforcement-Bias Correction (normalizes counts by officer headcount)
-   * Congestion Impact Index (CII) calculation
-   * Economic Loss Matrix (converts CII to Hourly Rupee Loss)
-   * Dark-Zone Scan (zero-ticket locations near metro exits/hospitals)
-         |
-         v
-[ Stage 04: Blended Forecasting ] -> fits LightGBM next-week model
-         |
-         v
-[ Stage 05: Artifact Packaging ] -> exports static JSON assets for Vercel UI
+```mermaid
+graph TD
+    Raw[Raw E-Challan Data] --> Stage1["Stage 01: Ingestion & Localization (Clean bounds & timezone)"]
+    Stage1 --> Stage2["Stage 02: HDBSCAN Clustering (Group coordinates into hotspots)"]
+    Stage2 --> Stage3["Stage 03: Proximity & Scoring (Bias correction, CII, Economic Loss, & Dark Zones)"]
+    Stage3 --> Stage4["Stage 04: Blended Forecasting (LightGBM next-week model)"]
+    Stage4 --> Stage5["Stage 05: Artifact Packaging (Export static JSON/GeoJSON)"]
+    Stage5 --> UI[Vercel Static UI]
 ```
 
 ### Core Analytical Steps

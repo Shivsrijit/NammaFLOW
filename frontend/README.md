@@ -8,22 +8,23 @@ This directory contains the React application for the NammaFLOW command center c
 
 The dashboard component hierarchy is organized as follows:
 
-```
-App (main viewport controller and global theme state)
- ├── Navbar (navigation header and theme switcher)
- ├── Hero (landing section with Three.js WebGL traffic simulation)
- ├── PlatformFeatures (features overview section)
- ├── SystemArchitecture (analytical steps flow diagram)
- ├── ConsoleLaunchCTA (call to action section)
- ├── Footer (developer credits and technical metadata)
- └── Control Console (split-screen interactive dashboard)
-      ├── MapView (MapLibre GL wrapper showing hotspots, density, and routes)
-      ├── HotspotDetail (drawer presenting statistics for the selected zone)
-      ├── PriorityQueue (dispatch list sorted by the priority score)
-      ├── ForecastView (weekly temporal slide controller)
-      ├── ShiftForecastView (12-hour operational forecaster and guidance)
-      ├── Charts (monthly trends and vehicle category distribution plots)
-      └── Methodology (formula references and calculation rules)
+```mermaid
+graph TD
+    App["App (Viewport & Theme State)"] --> Navbar["Navbar (Navigation & Theme Switcher)"]
+    App --> Hero["Hero (WebGL Traffic Simulation)"]
+    App --> Features["PlatformFeatures"]
+    App --> Arch["SystemArchitecture"]
+    App --> CTA["ConsoleLaunchCTA"]
+    App --> Footer["Footer"]
+    App --> Console["Control Console (Interactive Dashboard)"]
+    
+    Console --> MapView["MapView (MapLibre GL Hotspots & Density)"]
+    Console --> HotspotDetail["HotspotDetail (Zone Statistics Drawer)"]
+    Console --> PriorityQueue["PriorityQueue (Dispatch List)"]
+    Console --> ForecastView["ForecastView (Weekly Temporal Slide Controller)"]
+    Console --> ShiftForecastView["ShiftForecastView (12-Hour Shift Forecaster)"]
+    Console --> Charts["Charts (Trends & Vehicle Mix Plots)"]
+    Console --> Methodology["Methodology (Formula References)"]
 ```
 
 ---
