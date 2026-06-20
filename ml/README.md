@@ -71,14 +71,18 @@ $$A_c = \frac{C_c}{\sqrt{O_c}}$$
 
 ### Shannon Entropy of Temporal Persistence
 To differentiate chronic parking issues from transient events, the pipeline computes the normalized Shannon entropy of a hotspot's hourly histogram:
+
 $$H_s = -\frac{1}{\ln(24)} \sum_{i=0}^{23} p_i \ln(p_i)$$
+
 * $p_i$: Proportion of tickets occurring in hour $i$, defined as $p_i = \frac{count_i}{\sum count_i}$ (where $p_i > 0$).
 * *Interpretation*: A value of $H_s \approx 1$ represents constant all-day congestion, while $H_s \approx 0$ indicates a tight, brief congestion window.
 * *Composite Persistence ($P$)*:
+
   $$P = 0.6 \times \text{Norm}(\text{Days Active}) + 0.4 \times H_s$$
 
 ### Proximity Factor ($P_{\text{prox}}$)
 Hotspots blocking critical municipal infrastructure are weighted heavier:
+
 $$P_{\text{prox}} = \begin{cases} 
       2.0 & \text{if emergency hospital exit dist} \le 200\text{m} \\
       1.5 & \text{if metro transit exit dist} \le 200\text{m} \\
@@ -88,18 +92,23 @@ $$P_{\text{prox}} = \begin{cases}
 
 ### Congestion Impact Index (CII)
 The raw physical impact index is calculated by multiplying vehicle size footprint, street lane constraints, adjusted spatial density, persistence, and landmark proximity:
+
 $$\text{CII}_{\text{raw}} = V_f \times L_{\text{road}} \times D_{\text{adj}} \times P \times P_{\text{prox}}$$
+
 * $V_f$: Average vehicle footprint in lane-meters (BMTC Bus/Tanker = 2.5, Car = 0.8, Passenger Auto = 0.6, Motorcycle = 0.4).
 * $L_{\text{road}}$: Classification lane count.
 * $D_{\text{adj}}$: Normalized log adjusted count $\text{Norm}(\ln(1 + A_c))$.
 * $P$: Composite persistence.
 * $P_{\text{prox}}$: Proximity factor.
 * *Final Scaling*: Normalized to a $0 \text{ to } 100$ scale:
+
   $$\text{CII} = \text{Norm}(\text{CII}_{\text{raw}}) \times 100$$
 
 ### Composite Dispatch Priority Score
 The dispatch queue is sorted by a composite priority score combining physical impact and normalized asset features (must sum to 1.0):
+
 $$\text{Score} = w_d D_{\text{adj}} + w_s S + w_p P + w_r R_{\text{poi}} + w_c C_{\text{coverage}}$$
+
 * $w_d = 0.35$ (Normalized adjusted log density $D_{\text{adj}}$)
 * $w_s = 0.20$ (Normalized vehicle severity index $S$)
 * $w_p = 0.20$ (Normalized temporal persistence $P$)
@@ -108,16 +117,24 @@ $$\text{Score} = w_d D_{\text{adj}} + w_s S + w_p P + w_r R_{\text{poi}} + w_c C
 
 ### Economic Loss Model (Rupee Loss)
 Translates congestion into hourly currency delay costs:
+
 $$\text{Delay Hours (} D_h \text{)} = \frac{\text{CII}}{100} \times 0.08\text{ hours}$$
+
 $$\text{Hourly Traffic Volume (} T_v \text{)} = L_{\text{road}} \times 1200\text{ vehicles/hour}$$
+
 $$\text{Fuel Wastage Cost} = D_h \times B_i \times F_c$$
+
 $$\text{Commuter Time Cost} = D_h \times W_c$$
+
 $$\text{Loss/Hour} = T_v \times \left(\text{Fuel Wastage Cost} + \text{Commuter Time Cost}\right)$$
+
 * $B_i$: Vehicle idle fuel burn rate (0.6 liters/hour).
 * $F_c$: Local fuel price (102.5 INR/liter).
 * $W_c$: Average commuter wage (150 INR/hour).
 * *Simplified Formula*:
+
   $$\text{Loss/Hour} = (L_{\text{road}} \times 1200) \times D_h \times (0.6 \times 102.5 + 150)$$
+
   $$\text{Loss/Hour} = L_{\text{road}} \times 1200 \times D_h \times 211.5\text{ INR}$$
 
 ---
@@ -128,19 +145,29 @@ To forecast next-week hourly loads and next-shift (12-hour) dispatch needs, Namm
 
 ### Blended Ensemble Formulation
 The forecast for cell $c$ at hour-of-week $t$ is a weighted combination of a baseline seasonal profile model and a Gradient Boosting machine:
+
 $$\hat{Y}_{c, t} = 0.7 \times \left( \text{Profile}_{c, \text{how}} \times \text{Level}_{c, t} \right) + 0.3 \times \text{GBM}_{c, t}$$
+
 * **Seasonal Profile**: Historical average violation count in cell $c$ during that specific hour-of-week slot (0 to 167):
+
   $$\text{Profile}_{c, \text{how}} = \frac{1}{W} \sum_{w=1}^{W} Y_{c, \text{how}, w}$$
+
 * **Moving Level**: Recent volume scale factor capturing recent trends over the last 24, 48, and 168 hours relative to global cell mean:
+
   $$\text{Level}_{c, t} = \text{Clip}\left(\frac{\text{MA}_{c, t}(24)}{\mu_c}, 0.4, 2.2\right)$$
+
 * **GBM Regressor**: A Gradient Boosting Regressor (LightGBM with a fallback to scikit-learn's `HistGradientBoostingRegressor`) using a Poisson loss target:
+
   $$\mathcal{L}(y, \hat{y}) = \hat{y} - y \ln(\hat{y})$$
+
   * **Features**:
     * Lags: $1, 3, 6, 12, 24, 48, 168, 336$ hours.
     * Rolling Means: $6, 24, 72, 168$ hours.
     * EMA: Exponential moving average over the 168-hour seasonal shift.
     * Cyclical Encoded Time:
+
       $$\sin\left(\frac{2\pi \cdot \text{hour}}{24}\right), \cos\left(\frac{2\pi \cdot \text{hour}}{24}\right), \sin\left(\frac{2\pi \cdot \text{dow}}{7}\right), \cos\left(\frac{2\pi \cdot \text{dow}}{7}\right)$$
+
     * Weekend Indicators and categorical geohash level identifiers.
 
 ---
