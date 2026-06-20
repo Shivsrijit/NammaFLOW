@@ -26,3 +26,7 @@ frontend/.env.*.local
 *.log
 .DS_Store
 Thumbs.db
+
+# local report folder
+local/
+
