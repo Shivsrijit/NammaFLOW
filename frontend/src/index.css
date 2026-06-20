@@ -75,3 +75,34 @@ input[type="range"] { height: 4px; border-radius: 4px; background: var(--surface
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 8px; }
+
+/* LaTeX math overflow fixes */
+.markdown-math {
+  width: 100%;
+}
+.markdown-math .katex-display {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 6px 0;
+  margin: 4px 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.markdown-math .katex-display::-webkit-scrollbar {
+  height: 4px;
+}
+.markdown-math .katex-display::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+.markdown-math .katex {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none; /* Hide scrollbars for inline math to keep it clean */
+}
+.markdown-math .katex::-webkit-scrollbar {
+  display: none;
+}
