@@ -1,0 +1,28 @@
+# ignore raw data only
+ml/data/raw/*
+!ml/data/raw/.gitkeep
+
+# python
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.env
+.env.local
+.env.*.local
+
+# node (frontend)
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+
+# agents and system-generated
+.agents/
+.gemini/
+*.log
+.DS_Store
+Thumbs.db

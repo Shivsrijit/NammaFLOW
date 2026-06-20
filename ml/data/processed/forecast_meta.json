@@ -1,0 +1,50 @@
+{
+  "model": "LightGBM",
+  "holdout_r2": 0.8065,
+  "n_cells": 200,
+  "recommendation": {
+    "peak_dow": "Sun",
+    "peak_hour": 10,
+    "peak_slot": 154,
+    "label": "Sun 10:00",
+    "zones": [
+      {
+        "geohash6": "tdr1y5",
+        "lat": 12.981740067112618,
+        "lon": 77.60977016386805,
+        "predicted": 12.3
+      },
+      {
+        "geohash6": "tdr1v6",
+        "lat": 12.977256572868956,
+        "lon": 77.57746072795871,
+        "predicted": 8.7
+      },
+      {
+        "geohash6": "tdr1v2",
+        "lat": 12.965223207453652,
+        "lon": 77.5784656806406,
+        "predicted": 6.5
+      },
+      {
+        "geohash6": "tdr1v3",
+        "lat": 12.972553918869949,
+        "lon": 77.57832067529036,
+        "predicted": 6.5
+      },
+      {
+        "geohash6": "tdr1vg",
+        "lat": 12.982783589982548,
+        "lon": 77.60321281172325,
+        "predicted": 6.2
+      },
+      {
+        "geohash6": "tdr4hb",
+        "lat": 13.010172609905288,
+        "lon": 77.55457671910024,
+        "predicted": 4.1
+      }
+    ]
+  },
+  "model_pkl": "forecast_model.pkl"
+}

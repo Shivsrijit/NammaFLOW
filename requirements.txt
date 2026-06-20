@@ -1,0 +1,13 @@
+# Pipeline (data foundation, clustering, scoring, forecast, artifacts)
+pandas>=2.0
+numpy>=1.24
+scikit-learn>=1.3          # HDBSCAN + HistGradientBoosting live here
+scipy>=1.10
+pyarrow>=14.0             # fast Parquet; pipeline falls back to pickle if absent
+
+# Optional accelerators (pipeline auto-falls-back if missing)
+# lightgbm>=4.0           # forecast uses it if installed, else sklearn
+
+# Backend
+fastapi>=0.110
+uvicorn[standard]>=0.27
