@@ -1,20 +1,9 @@
 """
-Stage 04: forecast (with honest holdout validation + model export).
+Stage 04: Spatiotemporal forecasting and modeling.
 
-Predicts expected violations per geohash6 cell for each hour-of-week slot, and
-EXPORTS THE TRAINED MODEL to artifacts/forecast_model.pkl.
-
-Validation is a held-out split (not in-sample), so the reported R2 is an honest
-generalisation estimate rather than a flattering training score.
-
-Model: LightGBM -> sklearn HistGradientBoosting -> historical average.
-
-Writes:
-  data/processed/forecast_grid, data/processed/forecast_meta.json
-  artifacts/forecast.json
-  artifacts/forecast_model.pkl
-
-Run:  python pipeline/04_forecast.py
+Fits regression models to predict hourly violation counts per Geohash-6 cell.
+Provides robust holdout cross-validation to gauge generalization, exports the
+trained models, and generates weekly spatiotemporal recommendations.
 """
 
 import json

@@ -1,17 +1,14 @@
 """
-Patch 1 - Stage 01: clean + geohash.
+Stage 01: Clean raw violation data and compute geohashes.
 
-Reads the raw violation CSV and produces a single trustworthy cleaned table
-that every later stage builds on. It:
-  - parses timestamps and derives hour / day-of-week / month / daypart
-  - coalesces vehicle_type with the corrected updated_vehicle_type
-  - parses the violation list and offence codes into a primary value + count
-  - filters to approved violations (the confirmed-real core)
-  - drops invalid / out-of-Bengaluru coordinates
-  - drops the near-empty columns
-  - attaches geohash6 (coarse, for forecasting) and geohash7 (fine, for density)
-  - writes data/processed/cleaned.(parquet|pkl)
-  - prints a sanity report so you can confirm the data is sound
+Reads the raw violations CSV and produces a consolidated, cleaned data table
+for subsequent pipeline stages. This includes:
+  - Parsing timestamps and computing local temporal attributes (hour, daypart).
+  - Coalescing raw and corrected vehicle types.
+  - Extracting primary violation types and offence counts.
+  - Filtering for validated (approved) entries.
+  - Enforcing spatial boundary constraints for Bengaluru.
+  - Computing Geohash-6 and Geohash-7 geolocations.
 
 Run from the repo root:
     python pipeline/01_clean.py

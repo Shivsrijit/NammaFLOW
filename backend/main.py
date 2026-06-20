@@ -1,12 +1,11 @@
 """
-ParkSight backend.
+NammaFLOW Serving API.
 
-Loads the precomputed artifacts into memory once at startup and serves them.
-No heavy computation happens per request, so responses are instant and the demo
-cannot stutter. Run the pipeline first so artifacts/ is populated.
+Loads the precomputed spatiotemporal artifacts into memory once at startup
+to serve instant responses for the frontend dashboard. Make sure you run the
+data pipeline first so the ml/artifacts/ folder is populated.
 
 Run:
-    cd parksight
     uvicorn backend.main:app --reload --port 8000
 Docs at http://localhost:8000/docs
 """
@@ -23,10 +22,10 @@ from fastapi.staticfiles import StaticFiles
 ROOT = Path(__file__).resolve().parent.parent
 ARTIFACTS = ROOT / "ml" / "artifacts"
 
-app = FastAPI(title="ParkSight API", version="1.0")
+app = FastAPI(title="NammaFLOW API", version="1.0")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],          # demo: allow the Vite dev server on any port
+    allow_origins=["*"],          # Allow all origins for the Vite dev server during local testing
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -52,7 +51,7 @@ def warm_cache():
         try:
             _load(f)
         except HTTPException:
-            pass  # allow boot even if some artifact is not yet built
+            pass  # Allow the application to boot even if some artifacts are not yet generated
 
     # Ensure 12-hour forecast model is trained on startup
     model_path = ARTIFACTS / "forecast_model_12h.pkl"
@@ -103,7 +102,7 @@ def hotspot(hid: int):
 
 @app.get("/api/heatmap")
 def heatmap():
-    # full density grid; the frontend slices by daypart/vehicle client-side
+    # Return the full density grid; the React app slices this by daypart and vehicle class in the browser
     return JSONResponse(_load("heatmap.json"))
 
 
@@ -149,10 +148,10 @@ def upload_and_forecast_12h(file: UploadFile = File(...)):
     raise HTTPException(501, "Live retraining via CSV upload is currently disabled (Coming Soon).")
 
 
-# Serve frontend static assets from the built Vite folder
+# Mount the built React client dist folder for production static serving
 FRONTEND_DIST = ROOT / "frontend" / "dist"
 if FRONTEND_DIST.exists():
     app.mount("/", StaticFiles(directory=str(FRONTEND_DIST), html=True), name="frontend")
 else:
-    print(f"[warning] Frontend build folder not found at {FRONTEND_DIST}. Serve API only.")
+    print(f"[warning] Frontend build folder not found at {FRONTEND_DIST}. Serving API endpoints only.")
 

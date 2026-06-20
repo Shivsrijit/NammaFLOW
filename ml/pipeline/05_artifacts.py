@@ -1,8 +1,8 @@
 """
-Stage 05: assemble artifacts.
+Stage 05: Static artifact packaging.
 
-Reads the cleaned tables and scored hotspots/density/dark zones,
-and outputs static JSON files for FastAPI and Vite React to consume.
+Assembles calculations, scored hotspots, density maps, weekly patterns, and
+metrics into structured, optimized static JSON/GeoJSON files for the client UI.
 """
 
 import json

@@ -1,11 +1,12 @@
 """
-Stage 03: impact score, Congestion Impact Index (CII), Economic Loss, and Dark Zone detection.
+Stage 03: Multi-dimensional Congestion Indexing, Economic Loss, and Coverage Gap Analysis.
 
-Now enriched with OpenStreetMap (OSM) data:
-  - Resolves proximity to metro stations & hospitals
-  - Computes CII (Congestion Impact Index) using lane blocking, road lanes, and POI proximity
-  - Translates congestion into hourly Economic Loss in INR (₹)
-  - Identifies Dark Zones (unenforced high-risk corridors)
+Enriches spatial hotspots with OpenStreetMap road layouts and landmark features:
+  - Calculates local proximity features to transit nodes (Metro exits) and emergency hospital corridors.
+  - Computes the Congestion Impact Index (CII) considering vehicle footprint, local lane width, and hotspot density.
+  - Formulates an enforcement-bias correction model to normalize raw ticket counts based on officer distribution.
+  - Projects local hourly economic delays into INR metrics.
+  - Scans for unenforced spatial corridors to detect high-risk Coverage Gaps (Dark Zones).
 """
 
 import json

@@ -1,12 +1,10 @@
 """
-Shared helpers for the ParkSight pipeline.
+Shared helpers for the NammaFLOW pipeline.
 
-Two things live here:
-  1. A small, dependency-free geohash encoder, so the pipeline never breaks on
-     a missing geohash library at a hackathon.
-  2. save_table / load_table, which prefer Parquet (compact, fast) and fall back
-     to pickle automatically if pyarrow is not installed. Later stages just call
-     load_table without caring which format was written.
+Contains:
+  1. A standalone, dependency-free geohash encoder to ensure portable builds.
+  2. Table saving and loading utilities that leverage Parquet for fast disk access,
+     falling back to pickle if pyarrow is not available.
 """
 
 import pandas as pd
@@ -49,7 +47,7 @@ def geohash_encode(lat: float, lon: float, precision: int = 7) -> str:
 
 
 def geohash_series(lat: pd.Series, lon: pd.Series, precision: int) -> pd.Series:
-    """Vectorised-ish wrapper. Fast enough for a few hundred thousand rows."""
+    """Vectorized wrapper mapping geohash_encode over series pairs."""
     pairs = zip(lat.to_numpy(), lon.to_numpy())
     return pd.Series(
         [geohash_encode(la, lo, precision) for la, lo in pairs],

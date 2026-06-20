@@ -1,21 +1,12 @@
 """
-Stage 02: cluster + density.
+Stage 02: Spatial clustering and fine-grained density mapping.
 
-Two outputs that every later stage and the map depend on:
-  1. Hotspot clusters via HDBSCAN on the violation coordinates. HDBSCAN finds
-     clusters of varying density without a hand-tuned radius, which suits a city
-     where a metro hotspot is tight and a market strip is spread out. We use the
-     implementation built into scikit-learn (>=1.3), so there is no separate
-     hdbscan package to install. Falls back to DBSCAN if needed.
-  2. A geohash7 density grid (each ~150 m cell with a violation count, broken
-     down by daypart and vehicle class) that becomes the heatmap surface.
-
-Writes:
-  data/processed/clusters         (one row per violation, with a cluster label)
-  data/processed/cluster_summary  (one row per hotspot)
-  data/processed/density          (one row per geohash7 cell)
-
-Run:  python pipeline/02_cluster.py
+Generates two key data products for down-stream modeling and UI display:
+  1. Hotspot clusters using HDBSCAN. HDBSCAN groups coordinates of varying density
+     without manual radius tuning, matching complex urban layouts. Uses scikit-learn's
+     native HDBSCAN implementation with a DBSCAN fallback for robustness.
+  2. A Geohash-7 density grid, slicing ticket counts by daypart and vehicle class
+     to feed the interactive street-level density heatmap.
 """
 
 import json

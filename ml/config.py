@@ -1,10 +1,8 @@
 """
-Central configuration for the ParkSight pipeline.
+Central configuration for the NammaFLOW pipeline.
 
-Everything tunable lives here: paths, geographic bounds, geohash precision,
-the validation filter, and the scoring weights we will use in later patches.
-Keeping it in one file means we can retune enforcement priorities by editing
-a few numbers instead of hunting through scripts.
+Tunable parameters are centralized here: file paths, geographic boundaries,
+geohash precision levels, data filters, and impact scoring weights.
 """
 
 from pathlib import Path
@@ -77,8 +75,8 @@ def daypart(hour: int) -> str:
     return "night"
 
 # ---------------------------------------------------------------------------
-# Scoring weights (used from Patch 3 onward; defined here now so they live in
-# one place). Vehicle severity reflects how much a parked vehicle of this type
+# Scoring weights used to calculate the Congestion Impact Index (CII).
+# Vehicle severity reflects how much a parked vehicle of this type
 # obstructs traffic flow. Tune freely.
 # ---------------------------------------------------------------------------
 VEHICLE_SEVERITY = {
@@ -97,11 +95,11 @@ VEHICLE_SEVERITY = {
 }
 DEFAULT_SEVERITY = 0.4
 
-# Impact score component weights (must sum to 1.0). Placeholder for Patch 3.
+# Component weights for the Congestion Impact Index (CII) calculation (must sum to 1.0).
 IMPACT_WEIGHTS = {
     "density": 0.35,
     "severity": 0.20,
     "persistence": 0.20,
-    "road_poi": 0.15,      # filled once OSM enrichment lands (Patch later)
+    "road_poi": 0.15,      # Proximity to Metro exits, hospitals, and narrow roads.
     "coverage_adj": 0.10,  # enforcement-bias correction
 }
