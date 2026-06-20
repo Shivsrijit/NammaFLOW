@@ -82,13 +82,13 @@ export function SystemArchitecture() {
             
             <div className="p-5 rounded-lg border border-[var(--border)] bg-[var(--surface-2)]/40 w-full xl:w-60 shadow-sm hover:border-accent/20 transition-all duration-300 flex flex-col justify-between shrink-0">
               <div>
-                <span className="text-[8px] font-bold text-accent px-2 py-0.5 rounded bg-accent/5 border border-accent/10">STEP 01</span>
-                <div className="text-[10px] text-[var(--text)] font-extrabold mb-2 mt-2.5 tracking-wide">DATA GATHERING</div>
-                <p className="text-[9px] text-[var(--text-soft)] font-medium leading-relaxed mb-4">
+                <span className="text-[10px] font-bold text-accent px-2 py-0.5 rounded bg-accent/5 border border-accent/10">STEP 01</span>
+                <div className="text-[11.5px] text-[var(--text)] font-extrabold mb-2 mt-2.5 tracking-wide">DATA GATHERING</div>
+                <p className="text-[11px] text-[var(--text-soft)] font-medium leading-relaxed mb-4">
                   Combines city road grids, street networks, and patrol histories.
                 </p>
               </div>
-              <div className="border-t border-[var(--border)]/75 pt-3.5 space-y-2 text-[10px] text-[var(--text-soft)] font-semibold">
+              <div className="border-t border-[var(--border)]/75 pt-3.5 space-y-2 text-[10.5px] text-[var(--text-soft)] font-semibold">
                 <div className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent" />
                   <span>OSM Nodes: <strong className="text-[var(--text)] font-bold">45,182</strong></span>
@@ -118,13 +118,13 @@ export function SystemArchitecture() {
  
             <div className="p-5 rounded-lg border border-[var(--border)] bg-[var(--surface-2)]/40 w-full xl:w-60 shadow-sm hover:border-accent/20 transition-all duration-300 flex flex-col justify-between shrink-0">
               <div>
-                <span className="text-[8px] font-bold text-accent px-2 py-0.5 rounded bg-accent/5 border border-accent/10">STEP 02</span>
-                <div className="text-[10px] text-[var(--text)] font-extrabold mb-2 mt-2.5 tracking-wide">LAYOUT MODELING</div>
-                <p className="text-[9px] text-[var(--text-soft)] font-medium leading-relaxed mb-4">
+                <span className="text-[10px] font-bold text-accent px-2 py-0.5 rounded bg-accent/5 border border-accent/10">STEP 02</span>
+                <div className="text-[11.5px] text-[var(--text)] font-extrabold mb-2 mt-2.5 tracking-wide">LAYOUT MODELING</div>
+                <p className="text-[11px] text-[var(--text-soft)] font-medium leading-relaxed mb-4">
                   Correlates street layouts with busy commute hours.
                 </p>
               </div>
-              <div className="border-t border-[var(--border)]/75 pt-3.5 space-y-2 text-[10px] text-[var(--text-soft)] font-semibold">
+              <div className="border-t border-[var(--border)]/75 pt-3.5 space-y-2 text-[10.5px] text-[var(--text-soft)] font-semibold">
                 <div className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent" />
                   <span>Time Enc.: <strong className="text-[var(--text)] font-bold">Sin/Cos 168h</strong></span>
@@ -154,13 +154,13 @@ export function SystemArchitecture() {
  
             <div className="p-5 rounded-lg border border-[var(--border)] bg-[var(--surface-2)]/40 w-full xl:w-60 shadow-sm hover:border-accent/20 transition-all duration-300 flex flex-col justify-between shrink-0">
               <div>
-                <span className="text-[8px] font-bold text-accent px-2 py-0.5 rounded bg-accent/5 border border-accent/10">STEP 03</span>
-                <div className="text-[10px] text-[var(--text)] font-extrabold mb-2 mt-2.5 tracking-wide">RISK FORECASTING</div>
-                <p className="text-[9px] text-[var(--text-soft)] font-medium leading-relaxed mb-4">
+                <span className="text-[10px] font-bold text-accent px-2 py-0.5 rounded bg-accent/5 border border-accent/10">STEP 03</span>
+                <div className="text-[11.5px] text-[var(--text)] font-extrabold mb-2 mt-2.5 tracking-wide">RISK FORECASTING</div>
+                <p className="text-[11px] text-[var(--text-soft)] font-medium leading-relaxed mb-4">
                   Runs predictive algorithms to estimate localized traffic congestion risk.
                 </p>
               </div>
-              <div className="border-t border-[var(--border)]/75 pt-3.5 space-y-2 text-[10px] text-[var(--text-soft)] font-semibold">
+              <div className="border-t border-[var(--border)]/75 pt-3.5 space-y-2 text-[10.5px] text-[var(--text-soft)] font-semibold">
                 <div className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent" />
                   <span>Model: <strong className="text-[var(--text)] font-bold">LightGBM GBDT</strong></span>
@@ -190,13 +190,13 @@ export function SystemArchitecture() {
  
             <div className="p-5 rounded-lg border border-[var(--border)] bg-[var(--surface-2)]/40 w-full xl:w-60 shadow-sm hover:border-accent/20 transition-all duration-300 flex flex-col justify-between shrink-0">
               <div>
-                <span className="text-[8px] font-bold text-accent px-2 py-0.5 rounded bg-accent/5 border border-accent/10">STEP 04</span>
-                <div className="text-[10px] text-[var(--text)] font-extrabold mb-2 mt-2.5 tracking-wide">OFFICER DISPATCH</div>
-                <p className="text-[9px] text-[var(--text-soft)] font-medium leading-relaxed mb-4">
+                <span className="text-[10px] font-bold text-accent px-2 py-0.5 rounded bg-accent/5 border border-accent/10">STEP 04</span>
+                <div className="text-[11.5px] text-[var(--text)] font-extrabold mb-2 mt-2.5 tracking-wide">OFFICER DISPATCH</div>
+                <p className="text-[11px] text-[var(--text-soft)] font-medium leading-relaxed mb-4">
                   Prioritizes dispatch schedules to direct patrol cars to active bottlenecks.
                 </p>
               </div>
-              <div className="border-t border-[var(--border)]/75 pt-3.5 space-y-2 text-[10px] text-[var(--text-soft)] font-semibold">
+              <div className="border-t border-[var(--border)]/75 pt-3.5 space-y-2 text-[10.5px] text-[var(--text-soft)] font-semibold">
                 <div className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent" />
                   <span>Metric: <strong className="text-[var(--text)] font-bold">CII Index (%)</strong></span>
